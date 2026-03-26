@@ -1,0 +1,48 @@
+name: Alpha Trading Bot - Auto Trading
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  trade:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: |
+        npm install
+        
+    - name: Start trading bot
+      run: |
+        node backend/server.js &
+        sleep 5
+        
+    - name: Check BTCUSD signal
+      run: |
+        echo "Checking BTCUSD..."
+        curl https://alpha-trading-bot-r2g5.onrender.com/api/signal/BTCUSD
+        
+    - name: Check XAUUSD signal
+      run: |
+        echo "Checking XAUUSD..."
+        curl https://alpha-trading-bot-r2g5.onrender.com/api/signal/XAUUSD
+        
+    - name: Check GBPUSD signal
+      run: |
+        echo "Checking GBPUSD..."
+        curl https://alpha-trading-bot-r2g5.onrender.com/api/signal/GBPUSD
+        
+    - name: Log execution time
+      run: |
+        echo "Bot ran at $(date)" >> logs.txt
+        cat logs.txt
