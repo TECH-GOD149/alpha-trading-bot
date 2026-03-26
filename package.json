@@ -1,6 +1,7 @@
 {
   "name": "alpha-trading-bot",
   "version": "3.0.0",
+  "description": "Trading Bot for Headway Broker",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
